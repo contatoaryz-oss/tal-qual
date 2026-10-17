@@ -13,7 +13,8 @@
     "seed": "node scripts/seed.mjs",
     "local:up": "dev/local-supabase/up.sh",
     "local:reset": "dev/local-supabase/up.sh --reset",
-    "check:supabase": "node scripts/check-supabase.mjs"
+    "check:supabase": "node scripts/check-supabase.mjs",
+    "e2e": "PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers playwright test"
   },
   "dependencies": {
     "@fontsource/inter": "^5.3.0",
@@ -43,6 +44,8 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.56.0",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^26.6.5",
     "@types/react": "^19.3.0",

@@ -8,3 +8,7 @@ next-env.d.ts
 dev/local-supabase/auth.pid
 dev/local-supabase/auth.log
 dev/local-supabase/mailbox.jsonl
+test-results/
+playwright-report/
+e2e/.auth/
+e2e-results.json
