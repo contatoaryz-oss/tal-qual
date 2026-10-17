@@ -1,0 +1,62 @@
+feature,area,priority,original,clone,notes
+Workspace por cliente (multi-marca),workspace,must,yes,no,S22; Pro limita 5 marcas no original
+Criar workspace a partir de site,onboarding,must,yes,no,S01; F01
+Criar workspace a partir de @Instagram,onboarding,must,yes,no,S01; clientes locais muitas vezes só têm IG
+Progresso do onboarding por etapas,onboarding,should,yes,no,S02; bloquear geração até ficar pronto
+Extrair logo cores fontes do site,brand,must,yes,no,S03
+Extrair tom de voz e público do site,brand,must,yes,no,S03
+Editar Brand DNA clicando no campo,brand,must,yes,no,S03
+Resumo do negócio gerado,knowledge,must,yes,no,S04
+Upload de PDFs para base de conhecimento,knowledge,should,yes,no,S04; busca full-text em trechos
+Fotos reais do site categorizadas (equipe produto lifestyle),brand,could,yes,no,usado para compor anúncios com foto real
+Pessoas reais da equipe lidas do site,brand,could,yes,no,
+Gerar ICPs automaticamente,icp,must,yes,no,S05
+Criar e editar ICP manual (dores objetivos canais demografia),icp,must,yes,no,S06
+Ofertas (serviço produto promoção lead magnet),offers,must,yes,no,S07
+Vincular oferta a ICP com ICP principal,offers,must,yes,no,S08
+Lista de concorrentes (web + Ad Library) com cache,research,must,yes,no,S09; refresh custa
+Descobrir anunciantes por nicho e país,research,must,yes,no,S10 modo discover; país BR
+Raspar anúncios de um anunciante escolhido,research,should,yes,no,S10 modo scrape; mostrar custo antes
+Tendências sociais (ganchos ângulos formatos),research,must,yes,no,S11; janela de dias; TikTok IG X
+Confirmação de custo antes de pesquisa cara,research,should,yes,no,modal de custo
+Top posts próprios com métricas,analytics,must,yes,no,S12; inclui posts orgânicos fora da ferramenta
+Melhor horário para postar,analytics,should,yes,no,S12; alimenta Blitz
+Métricas diárias por plataforma,analytics,could,yes,no,S12
+Próprios anúncios vencedores ranqueados (com aviso de dados finos),analytics,should,yes,no,< 1000 impressões = não provado
+Objetivo do cliente (meta atual),strategy,should,yes,no,orienta recomendações
+Recomendações de próximo passo com por quê,strategy,must,yes,no,S13
+Board de propostas aprovar rejeitar discutir,strategy,should,yes,no,S13 kanban
+Agente em chat que planeja e executa,agent,should,yes,no,S14
+Gerar imagem de anúncio na marca,create,must,yes,no,S15; estilos hero lifestyle ugc infográfico retrato
+Gerar carrossel hook-história-CTA,create,must,yes,no,S15; 2-10 slides; slides pré-escritos opcionais
+Copy de anúncio (headline corpo CTA) por segmento de público,create,must,yes,no,até 3 segmentos no original
+Posicionamento por plataforma (4:5 9:16 1:1),create,must,yes,no,S15
+Variantes em lote,create,should,yes,no,até 20 por lote no original
+Fundamentar geração em oferta + ICP,create,must,yes,no,offer_id e icp_id na geração
+Usar tendência ou anúncio concorrente como ângulo,create,must,yes,no,ligação research -> create
+Remixar referência em versão própria,create,should,yes,no,recreate ad creatives
+Compor anúncio sobre foto com logo real,create,should,yes,no,evita logo inventado
+Estimativa de custo antes de gerar,create,should,yes,no,no clone: custo de API
+Card de progresso da geração,create,should,yes,no,S16; crédito devolvido em falha
+Galeria de criativos com filtros,create,must,yes,no,S17
+Editar criativo falando (nova versão mantém a anterior),edit,must,yes,no,S18; F07
+Comparar versões antes/depois,edit,should,yes,no,S18 slider
+Veredito de marca (confiança do logo + instrução de correção),quality,should,yes,no,S18
+Score de anúncio com o que funciona / o que corrigir,quality,should,yes,no,S19; rubrica própria no clone
+Linhagem do criativo (origem e por público),quality,could,yes,no,S24
+Inspiração Discover / For You,create,could,yes,no,S23; com presets próprios
+Rascunho de post com legenda por canal,publish,must,yes,no,uma legenda por canal
+Blitz: deck de swipe semanal,publish,should,yes,no,S20
+Calendário de conteúdo semanal,publish,must,yes,no,S21
+Calendário mensal proposto (lançamento prova bastidor oferta),publish,should,yes,no,
+Memória de preferências e aprendizados por cliente,agent,could,yes,no,
+Convidar cliente para aprovar no workspace,workspace,could,yes,no,
+Modelo Treviso de score,quality,skip,yes,no,modelo e dados proprietários; usar rubrica + seus próprios resultados
+Biblioteca golden hooks,create,skip,yes,no,curadoria proprietária; montar a sua
+Templates Discover e receitas Product Studio,create,skip,yes,no,assets deles; criar os seus
+Corpus Explore / galeria de clientes,research,skip,yes,no,conteúdo de terceiros
+Publicação nas redes,publish,skip,yes,no,fora da fatia
+Lançar e gerenciar campanhas pagas,ads,skip,yes,no,fora da fatia
+Inbox DMs comentários e automações,comms,skip,yes,no,fora da fatia
+Vídeo UGC e vídeo de anúncio,create,skip,yes,no,fora da fatia
+Landing pages funis Stripe CRM e-mail,site,skip,yes,no,fora da fatia
