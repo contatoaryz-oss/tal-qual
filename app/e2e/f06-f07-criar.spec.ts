@@ -146,8 +146,11 @@ test('F07-H2 favoritar → filtro Favoritas', async ({ page }) => {
   const [{ before }] = await db`select count(*)::int as before from creatives c join workspaces w on w.id = c.workspace_id where w.slug = 'pisos-exemplo' and c.favorite`;
   await generate(page);
   await page.locator('a[aria-label^="Abrir variação 1"]').click();
+  // espera o servidor gravar (o botão muda na hora, otimista; sair antes disso é corrida do teste)
+  const saved = page.waitForResponse((r) => r.request().method() === 'POST' && r.url().includes('/galeria/'));
   await page.getByRole('button', { name: 'Marcar como favorito' }).click();
   await expect(page.getByRole('button', { name: 'Tirar dos favoritos' })).toBeVisible();
+  await saved;
   await page.goto(`${W}/galeria?filtro=favoritas`);
   await expect(page.getByRole('link', { name: /Feed do Instagram/ })).toHaveCount(before + 1);
 });

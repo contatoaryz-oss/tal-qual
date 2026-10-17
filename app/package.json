@@ -14,7 +14,8 @@
     "local:up": "dev/local-supabase/up.sh",
     "local:reset": "dev/local-supabase/up.sh --reset",
     "check:supabase": "node scripts/check-supabase.mjs",
-    "e2e": "PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers playwright test"
+    "e2e": "PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers playwright test",
+    "vercel-build": "node scripts/migrate.mjs && node scripts/check-supabase.mjs --fix && next build"
   },
   "dependencies": {
     "@fontsource/inter": "^5.3.0",

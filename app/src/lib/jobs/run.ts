@@ -1,4 +1,5 @@
 import 'server-only';
+import { after } from 'next/server';
 import * as data from '../data/service';
 import { readFile, saveFile } from '../storage';
 import { PLACEMENTS, type StageKey } from '../data/types';
@@ -14,7 +15,10 @@ const running = new Set<string>();
 function once(key: string, fn: () => Promise<void>) {
   if (running.has(key)) return;
   running.add(key);
-  fn().catch((err) => console.error(`[job ${key}]`, err)).finally(() => running.delete(key));
+  const job = fn().catch((err) => console.error(`[job ${key}]`, err)).finally(() => running.delete(key));
+  // Em servidor sem estado (Vercel), a função congela quando a resposta sai. after() mantém o job vivo até
+  // terminar (waitUntil). Fora de uma requisição (scripts), after() lança: aí o job segue normal no processo.
+  try { after(() => job); } catch {}
 }
 
 /* ------------------------------ onboarding ------------------------------ */
