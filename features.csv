@@ -1,19 +1,19 @@
 feature,area,priority,original,clone,notes
-Workspace por cliente (multi-marca),workspace,must,yes,no,S22; Pro limita 5 marcas no original
-Criar workspace a partir de site,onboarding,must,yes,no,S01; F01
-Criar workspace a partir de @Instagram,onboarding,must,yes,no,S01; clientes locais muitas vezes só têm IG
-Progresso do onboarding por etapas,onboarding,should,yes,no,S02; bloquear geração até ficar pronto
-Extrair logo cores fontes do site,brand,must,yes,no,S03
-Extrair tom de voz e público do site,brand,must,yes,no,S03
-Editar Brand DNA clicando no campo,brand,must,yes,no,S03
+Workspace por cliente (multi-marca),workspace,must,yes,partial,S22; Pro limita 5 marcas no original | M0: vários clientes + seletor no header; sem login/convite ainda (backend)
+Criar workspace a partir de site,onboarding,must,yes,partial,S01; F01 | M0: valida e cadastra; leitura real do site entra com Apify no backend (hoje modo de teste)
+Criar workspace a partir de @Instagram,onboarding,must,yes,partial,S01; clientes locais muitas vezes só têm IG | M0: aceita @ e instagram.com/...; leitura do perfil entra no backend
+Progresso do onboarding por etapas,onboarding,should,yes,yes,"S02; bloquear geração até ficar pronto | M0: S02 com 7 etapas, estados e atualização ao vivo (polling 1s)"
+Extrair logo cores fontes do site,brand,must,yes,partial,"S03 | M0: logo por upload (corta margem, SVG vira PNG); paleta sugerida em modo de teste"
+Extrair tom de voz e público do site,brand,must,yes,no,S03 | M0: campos editáveis existem; extração automática entra com Claude no backend
+Editar Brand DNA clicando no campo,brand,must,yes,yes,"S03 | M0: InlineEdit com teclado, edited_fields respeitado pela máquina"
 Resumo do negócio gerado,knowledge,must,yes,no,S04
 Upload de PDFs para base de conhecimento,knowledge,should,yes,no,S04; busca full-text em trechos
 Fotos reais do site categorizadas (equipe produto lifestyle),brand,could,yes,no,usado para compor anúncios com foto real
 Pessoas reais da equipe lidas do site,brand,could,yes,no,
 Gerar ICPs automaticamente,icp,must,yes,no,S05
-Criar e editar ICP manual (dores objetivos canais demografia),icp,must,yes,no,S06
-Ofertas (serviço produto promoção lead magnet),offers,must,yes,no,S07
-Vincular oferta a ICP com ICP principal,offers,must,yes,no,S08
+Criar e editar ICP manual (dores objetivos canais demografia),icp,must,yes,yes,S06 | M0: S05/S06
+Ofertas (serviço produto promoção lead magnet),offers,must,yes,yes,"S07 | M0: S07/S08, preço em centavos com parser BR"
+Vincular oferta a ICP com ICP principal,offers,must,yes,yes,"S08 | M0: um principal por oferta, troca e herança ao desvincular"
 Lista de concorrentes (web + Ad Library) com cache,research,must,yes,no,S09; refresh custa
 Descobrir anunciantes por nicho e país,research,must,yes,no,S10 modo discover; país BR
 Raspar anúncios de um anunciante escolhido,research,should,yes,no,S10 modo scrape; mostrar custo antes
@@ -27,25 +27,25 @@ Objetivo do cliente (meta atual),strategy,should,yes,no,orienta recomendações
 Recomendações de próximo passo com por quê,strategy,must,yes,no,S13
 Board de propostas aprovar rejeitar discutir,strategy,should,yes,no,S13 kanban
 Agente em chat que planeja e executa,agent,should,yes,no,S14
-Gerar imagem de anúncio na marca,create,must,yes,no,S15; estilos hero lifestyle ugc infográfico retrato
+Gerar imagem de anúncio na marca,create,must,yes,partial,S15; estilos hero lifestyle ugc infográfico retrato | M0: composição final real (Satori + logo oficial + acentos); fundo abstrato e copy por modelo até entrar IA
 Gerar carrossel hook-história-CTA,create,must,yes,no,S15; 2-10 slides; slides pré-escritos opcionais
-Copy de anúncio (headline corpo CTA) por segmento de público,create,must,yes,no,até 3 segmentos no original
-Posicionamento por plataforma (4:5 9:16 1:1),create,must,yes,no,S15
-Variantes em lote,create,should,yes,no,até 20 por lote no original
-Fundamentar geração em oferta + ICP,create,must,yes,no,offer_id e icp_id na geração
+Copy de anúncio (headline corpo CTA) por segmento de público,create,must,yes,partial,"até 3 segmentos no original | M0: headline, legenda e CTA por persona/oferta via modelos prontos; Claude no backend"
+Posicionamento por plataforma (4:5 9:16 1:1),create,must,yes,yes,"S15 | M0: feed 4:5, stories 9:16, quadrado 1:1 no form; 6 no modelo"
+Variantes em lote,create,should,yes,partial,até 20 por lote no original | M0: 1 a 4 por lote (original: até 20)
+Fundamentar geração em oferta + ICP,create,must,yes,yes,"offer_id e icp_id na geração | M0: oferta obrigatória, persona principal pré-selecionada"
 Usar tendência ou anúncio concorrente como ângulo,create,must,yes,no,ligação research -> create
 Remixar referência em versão própria,create,should,yes,no,recreate ad creatives
-Compor anúncio sobre foto com logo real,create,should,yes,no,evita logo inventado
-Estimativa de custo antes de gerar,create,should,yes,no,no clone: custo de API
-Card de progresso da geração,create,should,yes,no,S16; crédito devolvido em falha
-Galeria de criativos com filtros,create,must,yes,no,S17
+Compor anúncio sobre foto com logo real,create,should,yes,partial,evita logo inventado | M0: logo real já é composto como arquivo; foto real do cliente como fundo fica para M4
+Estimativa de custo antes de gerar,create,should,yes,partial,no clone: custo de API | M0: badge de custo e teto mensal checado; custo 0 no modo de teste
+Card de progresso da geração,create,should,yes,yes,S16; crédito devolvido em falha | M0: S16 com fila/gerando/pronta/falhou e tentar de novo
+Galeria de criativos com filtros,create,must,yes,yes,"S17 | M0: S17: todas, favoritas, com erro; favoritar otimista"
 Editar criativo falando (nova versão mantém a anterior),edit,must,yes,no,S18; F07
 Comparar versões antes/depois,edit,should,yes,no,S18 slider
 Veredito de marca (confiança do logo + instrução de correção),quality,should,yes,no,S18
 Score de anúncio com o que funciona / o que corrigir,quality,should,yes,no,S19; rubrica própria no clone
 Linhagem do criativo (origem e por público),quality,could,yes,no,S24
 Inspiração Discover / For You,create,could,yes,no,S23; com presets próprios
-Rascunho de post com legenda por canal,publish,must,yes,no,uma legenda por canal
+Rascunho de post com legenda por canal,publish,must,yes,partial,uma legenda por canal | M0: legenda pronta para copiar; uma legenda por canal entra no M3
 Blitz: deck de swipe semanal,publish,should,yes,no,S20
 Calendário de conteúdo semanal,publish,must,yes,no,S21
 Calendário mensal proposto (lançamento prova bastidor oferta),publish,should,yes,no,
