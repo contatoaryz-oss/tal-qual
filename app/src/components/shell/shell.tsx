@@ -7,7 +7,7 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import {
   BarChart3, BookOpen, Bot, CalendarDays, Check, ChevronsUpDown, Gauge, Images, Layers, Lightbulb, Megaphone,
-  Menu, Moon, Palette, Plus, Sparkles, Sun, Swords, TrendingUp, Users, Wand2, X, ArrowLeftRight,
+  Menu, Moon, Clock, Palette, Plus, Sparkles, Sun, Swords, TrendingUp, Users, Wand2, X, ArrowLeftRight,
 } from 'lucide-react';
 import { cn, focusRing } from '@/components/ui/cn';
 import { IconButton } from '@/components/ui/button';
@@ -55,8 +55,13 @@ function Nav({ slug, live, onNavigate }: { slug: string; live: Set<string>; onNa
                 )}
               >
                 <span aria-hidden className="[&>svg]:size-[18px]">{ICONS[s.nav!.icon]}</span>
-                <span className="flex-1">{s.title}</span>
-                {!live.has(s.id) && <span className="text-xs font-normal text-text-muted">em breve</span>}
+                <span className="flex-1 truncate">{s.title}</span>
+                {!live.has(s.id) && (
+                  <span title="Em breve" className="text-text-muted">
+                    <Clock className="size-3.5" aria-hidden />
+                    <span className="sr-only">(em breve)</span>
+                  </span>
+                )}
               </Link>
             );
           })}
