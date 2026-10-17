@@ -44,7 +44,7 @@ export default async function CreatePage({ params, searchParams }: { params: Pro
 
   return (
     <>
-      <PageHeader title="Criar" description="Escolha a oferta e a persona. A arte sai na marca do cliente, com o logo oficial e o texto composto por cima." />
+      <PageHeader title="Criar" description="Escolha a oferta e a persona. A arte sai tal qual a marca do cliente: logo oficial, cores dele e o texto composto por cima." />
       <div className="flex flex-col gap-4">
         {!ready.ready && (
           <InlineAlert tone="danger" title="Ainda não dá para gerar">

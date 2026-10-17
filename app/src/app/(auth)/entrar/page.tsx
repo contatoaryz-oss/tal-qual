@@ -19,7 +19,7 @@ export default async function SignInPage({ searchParams }: { searchParams: Promi
   return (
     <>
       <h1 className="font-display text-2xl font-extrabold text-text">Entrar</h1>
-      <p className="mb-6 mt-1 text-sm text-text-muted">Acesse os clientes da sua agência.</p>
+      <p className="mb-6 mt-1 text-sm text-text-muted">Os clientes da agência, cada um com a marca dele.</p>
       {notice && <div className="mb-4"><InlineAlert tone={notice.tone} title={notice.title} /></div>}
       <SignInForm next={safeNext(sp.next)} />
       <p className="mt-6 text-center text-sm text-text-muted">

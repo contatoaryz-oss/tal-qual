@@ -8,8 +8,8 @@ import '@fontsource/manrope/800.css';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: { default: 'Estúdio de conteúdo', template: '%s · Estúdio de conteúdo' },
-  description: 'Entender o negócio do cliente e criar conteúdo e anúncios a partir disso.',
+  title: { default: 'Tal Qual', template: '%s · Tal Qual' },
+  description: 'Arte e anúncio tal qual a marca do cliente: oferta dele, logo oficial, cores confirmadas.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

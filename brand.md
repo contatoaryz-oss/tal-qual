@@ -1,7 +1,7 @@
 # Marca do clone
 
 Ângulo (de `fixes.md`): **fiel à marca do cliente.** A arte sai com a oferta, o logo e as cores que o próprio cliente confirmou. Público: agência de social media que atende comércio e serviço local, em português.
-Nome provisório no app hoje: "Estúdio".
+**Nome escolhido: Tal Qual** (17/10/2026). Já trocado no app inteiro. **As checagens ainda não foram rodadas:** rode a linha "Tal Qual" da planilha antes de gastar com registro ou domínio.
 
 ## Os 10 nomes
 
@@ -67,19 +67,18 @@ Planilha para preencher (escreva o resultado e a data; deixe "a rodar" no que n�
 
 Fica o azul-marinho com amarelo que você escolheu no `/replica-design` (56 pares de contraste, 0 falhas). **Falta conferir:** não consegui confirmar as cores da Vibiz (o site não expõe os códigos). Abra vibiz.ai: se o primário deles também for marinho ou amarelo, troque o seu antes de lançar.
 
-## Briefing do logo
+## Briefing do logo — Tal Qual
 
-Fica para depois de escolher o nome. O que vale para qualquer um dos três primeiros:
-
-- **Ideia:** o "carimbo" de autenticidade da marca do cliente. Algo que se encaixa, fica no prumo, está no feitio dele.
-- **Tipo:** marca nominal (só o nome) com um monograma da inicial para favicon e ícone.
+- **Ideia:** cópia fiel, sem desvio. Duas formas iguais lado a lado (os dois "a" de "Tal" e "Qual", ou dois quadrados idênticos), sugerindo "isto é exatamente aquilo".
+- **Tipo:** marca nominal "Tal Qual" em Manrope ExtraBold (a fonte de títulos do app), mais o monograma "TQ" para favicon e ícone.
+- **Hoje no app:** ícone provisório "TQ" amarelo sobre marinho (`src/app/icon.svg`). Troque pelo definitivo quando ficar pronto.
 - Tem que ler bem em 16 px (favicon) e em 1024 px (ícone, sem transparência).
 - **Arquivos:** SVG, ícone 1024×1024, conjunto de favicons e imagem social 1200×630.
 - **Não pode lembrar o logo da Vibiz:** nada de forma, par de cores ou truque de letra em comum. Ponha os rascunhos ao lado do logo deles e compare.
 
 ## Voz
 
-Os textos novos (botões, mensagens vazias, erros, e-mails) entram depois de escolher o nome.
+Já aplicada nos textos mais vistos: o título das páginas e a descrição do site, o cabeçalho, a tela de login ("Os clientes da agência, cada um com a marca dele."), a tela Criar ("A arte sai tal qual a marca do cliente…") e os três e-mails. Os botões, as mensagens vazias e os erros já estavam no tom e ficaram como estavam.
 
 - **Direta, não seca:** "Gerar 3 artes", não "Clique aqui para iniciar o processo de geração".
 - **De agência, não de robô:** fala de cliente, oferta e persona, não de "workspace" e "assets".
@@ -87,4 +86,4 @@ Os textos novos (botões, mensagens vazias, erros, e-mails) entram depois de esc
 
 ## Varredura
 
-Busca por "vibiz", "treviso", "blitz" e "autopilot" no código, nos modelos de e-mail e nas migrações (fora `node_modules`, build e esta pasta `replica/`). Achou 1 comentário ("deck do Blitz" no SQL), já trocado. **0 restantes.** O nome provisório "Estúdio" aparece em 8 arquivos e vai ser trocado quando você escolher o nome.
+Busca por "vibiz", "treviso", "blitz" e "autopilot" no código, nos modelos de e-mail e nas migrações (fora `node_modules`, build e esta pasta `replica/`). Achou 1 comentário ("deck do Blitz" no SQL), já trocado. **0 restantes.** O nome provisório "Estúdio" foi trocado por "Tal Qual" nos 8 arquivos: **0 restantes**. Os 60 testes continuam passando.

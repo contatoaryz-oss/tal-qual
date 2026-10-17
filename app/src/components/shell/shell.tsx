@@ -151,7 +151,7 @@ export function AppShell({
       </a>
       <aside className="fixed inset-y-0 left-0 hidden w-[var(--layout-sidebar)] overflow-y-auto border-r border-border bg-surface lg:block">
         <div className="flex h-[var(--layout-header)] items-center border-b border-border px-5">
-          <Link href="/" className={cn('font-display text-md font-extrabold text-text', focusRing)}>Estúdio</Link>
+          <Link href="/" className={cn('font-display text-md font-extrabold text-text', focusRing)}>Tal Qual</Link>
         </div>
         <Nav slug={current.slug} live={live} />
       </aside>

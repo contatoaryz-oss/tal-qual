@@ -17,7 +17,7 @@ export default async function ClientsPage() {
   return (
     <div className="min-h-dvh bg-bg">
       <header className="flex h-[var(--layout-header)] items-center justify-between border-b border-border bg-surface px-4 md:px-6">
-        <span className="font-display text-md font-extrabold text-text">Estúdio</span>
+        <span className="font-display text-md font-extrabold text-text">Tal Qual</span>
         <div className="flex items-center gap-1"><ThemeToggle /><AccountMenu email={user.email} /></div>
       </header>
       <main id="conteudo" className="mx-auto w-full max-w-[var(--layout-content-max)] px-4 py-8 md:px-6">

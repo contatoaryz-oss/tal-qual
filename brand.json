@@ -1,13 +1,36 @@
 {
-  "name": null,
-  "candidates": ["Feitio", "Timbre", "Cunho", "Prumo", "Riscado", "Lastro", "Carimbo", "Tal Qual", "Matiz", "Esteio"],
+  "name": "Tal Qual",
+  "candidates": [
+    "Feitio",
+    "Timbre",
+    "Cunho",
+    "Prumo",
+    "Riscado",
+    "Lastro",
+    "Carimbo",
+    "Tal Qual",
+    "Matiz",
+    "Esteio"
+  ],
   "placeholder": "Estúdio",
-  "avoid": ["vibiz", "vibiz.ai", "treviso", "blitz", "autopilot", "Content in. Customers out."],
-  "domains": [],
+  "avoid": [
+    "vibiz",
+    "vibiz.ai",
+    "treviso",
+    "blitz",
+    "autopilot",
+    "Content in. Customers out."
+  ],
+  "domains": [
+    "talqual.com.br (a checar)",
+    "talqual.app (a checar)",
+    "usetalqual.com.br (plano B)"
+  ],
   "colors": {
     "primary": "#0B1B33",
     "accent": "#F5C33B",
     "original_to_avoid": []
   },
-  "notes": "original_to_avoid vazio: cores da Vibiz não confirmadas (17/10/2026). domains: preencher depois das checagens."
+  "notes": "original_to_avoid vazio: cores da Vibiz não confirmadas (17/10/2026). domains: preencher depois das checagens.",
+  "placeholder_replaced": true
 }
