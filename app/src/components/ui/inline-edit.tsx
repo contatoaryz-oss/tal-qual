@@ -32,7 +32,11 @@ export function InlineEdit({
   const readBtn = useRef<HTMLButtonElement>(null);
   const input = useRef<HTMLInputElement & HTMLTextAreaElement>(null);
 
-  useEffect(() => { if (editing) input.current?.focus(); }, [editing]);
+  const returnFocus = useRef(false);
+  useEffect(() => {
+    if (editing) input.current?.focus();
+    else if (returnFocus.current) { returnFocus.current = false; readBtn.current?.focus(); }
+  }, [editing]);
   useEffect(() => { if (!editing) setDraft(value ?? ''); }, [value, editing]);
   useEffect(() => {
     if (!saved) return;
@@ -40,7 +44,9 @@ export function InlineEdit({
     return () => clearTimeout(t);
   }, [saved]);
 
-  const close = () => { setEditing(false); setError(null); requestAnimationFrame(() => readBtn.current?.focus()); };
+  // O foco volta ao botão de leitura depois que o modo de edição fecha (efeito acima), não num rAF:
+  // dentro de uma transição o render pode vir depois do próximo frame.
+  const close = () => { returnFocus.current = true; setEditing(false); setError(null); };
   const save = () =>
     start(async () => {
       const r = await onSave(draft);

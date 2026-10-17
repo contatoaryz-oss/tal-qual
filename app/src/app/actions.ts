@@ -87,6 +87,9 @@ export async function uploadLogoAction(slug: string, _: FormState, fd: FormData)
       const sharp = (await import('sharp')).default;
       png = await sharp(buf).resize({ height: 512, withoutEnlargement: true }).png().toBuffer();
     }
+    // Corta margem transparente: muito logo vem com sobra e fica pequeno na arte.
+    const sharp = (await import('sharp')).default;
+    png = await sharp(png).trim({ threshold: 1 }).png().toBuffer().catch((e) => { console.error('[logo trim]', e); return png; });
   } catch {
     return { fieldErrors: { logo: 'Não conseguimos ler esta imagem. Tente outro arquivo.' } };
   }
@@ -255,4 +258,15 @@ export async function deleteCreativeAction(slug: string, id: string) {
   data.deleteCreative(ws.id, id);
   revalidatePath(`/w/${slug}/galeria`);
   redirect(`/w/${slug}/galeria`);
+}
+
+/** Gera mais uma variação com os mesmos parâmetros de um criativo existente. */
+export async function createVariationAction(slug: string, id: string) {
+  const ws = data.getWorkspace(slug);
+  const c = data.getCreative(ws.id, id);
+  const { batchId, ids } = data.createCreatives(ws.id, {
+    format: c.format, placement: c.placement, aspectRatio: c.aspectRatio, style: c.style, brief: c.brief, offerId: c.offerId, icpId: c.icpId,
+  }, 1);
+  startGeneration(ws.id, ids);
+  redirect(`/w/${slug}/criar/lote/${batchId}`);
 }
