@@ -511,7 +511,7 @@ create table post_drafts (
   pillar text check (pillar in ('launch','proof','behind_the_scenes','offer','education','entertainment')),
   scheduled_for timestamptz,                  -- UTC; exibir no fuso do workspace
   status text not null default 'proposed' check (status in ('proposed','approved','skipped','scheduled','published_manually')),
-  deck_id uuid,                               -- deck do Blitz
+  deck_id uuid,                               -- deck semanal do swipe
   approved_by uuid references auth.users(id) on delete set null,
   approved_at timestamptz,
   created_at timestamptz not null default now(),
