@@ -1,5 +1,5 @@
 feature,area,priority,original,clone,notes
-Workspace por cliente (multi-marca),workspace,must,yes,partial,S22; Pro limita 5 marcas no original | M0: vários clientes + seletor no header; sem login/convite ainda (backend)
+Workspace por cliente (multi-marca),workspace,must,yes,yes,"S22; Pro limita 5 marcas no original | M0: vários clientes + seletor no header; sem login/convite ainda (backend) | backend: login, agência por conta e isolamento por RLS testado com segundo usuário"
 Criar workspace a partir de site,onboarding,must,yes,partial,S01; F01 | M0: valida e cadastra; leitura real do site entra com Apify no backend (hoje modo de teste)
 Criar workspace a partir de @Instagram,onboarding,must,yes,partial,S01; clientes locais muitas vezes só têm IG | M0: aceita @ e instagram.com/...; leitura do perfil entra no backend
 Progresso do onboarding por etapas,onboarding,should,yes,yes,"S02; bloquear geração até ficar pronto | M0: S02 com 7 etapas, estados e atualização ao vivo (polling 1s)"
@@ -50,7 +50,7 @@ Blitz: deck de swipe semanal,publish,should,yes,no,S20
 Calendário de conteúdo semanal,publish,must,yes,no,S21
 Calendário mensal proposto (lançamento prova bastidor oferta),publish,should,yes,no,
 Memória de preferências e aprendizados por cliente,agent,could,yes,no,
-Convidar cliente para aprovar no workspace,workspace,could,yes,no,
+Convidar cliente para aprovar no workspace,workspace,could,yes,no, | backend: papéis e workspace_members prontos no banco; falta a tela de convite
 Modelo Treviso de score,quality,skip,yes,no,modelo e dados proprietários; usar rubrica + seus próprios resultados
 Biblioteca golden hooks,create,skip,yes,no,curadoria proprietária; montar a sua
 Templates Discover e receitas Product Studio,create,skip,yes,no,assets deles; criar os seus
@@ -60,3 +60,11 @@ Lançar e gerenciar campanhas pagas,ads,skip,yes,no,fora da fatia
 Inbox DMs comentários e automações,comms,skip,yes,no,fora da fatia
 Vídeo UGC e vídeo de anúncio,create,skip,yes,no,fora da fatia
 Landing pages funis Stripe CRM e-mail,site,skip,yes,no,fora da fatia
+Login com e-mail e senha + confirmação de e-mail,auth,must,yes,yes,Supabase Auth; testado com simulador local; confirmar no projeto real com check:supabase
+Link mágico por e-mail,auth,should,yes,yes,uso único; não revela se o e-mail existe
+Recuperar e trocar senha,auth,must,yes,yes,link por e-mail + troca na conta
+Sair de todos os aparelhos,auth,should,yes,yes,signOut global
+Apagar conta e dados,auth,must,yes,yes,"agência, clientes, criativos, arquivos e login"
+Login com Google,auth,could,yes,no,código pronto para PKCE; falta o OAuth client do Google e o botão
+Banco com isolamento por agência (RLS),backend,must,yes,yes,33 tabelas com RLS; teste SQL e de tela com intruso
+Limite de tentativas no login e e-mails,backend,must,yes,yes,"no banco, por e-mail e IP"

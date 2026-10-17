@@ -16,10 +16,10 @@ export const metadata: Metadata = { title: 'Marca' };
 
 export default async function BrandPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const ws = getWorkspace(slug);
-  const brand = getBrandKit(ws.id);
-  const ready = readiness(ws.id);
-  const scrape = listStages(ws.id).find((s) => s.stage === 'scrape');
+  const ws = await getWorkspace(slug);
+  const brand = await getBrandKit(ws.id);
+  const ready = await readiness(ws.id);
+  const scrape = (await listStages(ws.id)).find((s) => s.stage === 'scrape');
   const edited = new Set(brand.editedFields);
   const text = (field: 'companyName' | 'headline' | 'toneOfVoice' | 'targetAudience') => updateBrandTextAction.bind(null, slug, field);
 

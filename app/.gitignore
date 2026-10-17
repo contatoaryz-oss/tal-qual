@@ -3,3 +3,8 @@ node_modules
 .data
 next-env.d.ts
 *.tsbuildinfo
+.env*
+!.env.example
+dev/local-supabase/auth.pid
+dev/local-supabase/auth.log
+dev/local-supabase/mailbox.jsonl

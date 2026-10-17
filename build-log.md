@@ -34,3 +34,16 @@ Rodar: `cd replica/app && npm install && npm run dev` → http://localhost:3000.
 - Console: 0 erros nas telas (o único aviso foi do próprio Playwright injetando `caret-color` ao tirar print; sem print, 0 em 8 recargas).
 - Testes de unidade dos parsers de endereço e preço: `npm test` (4/4).
 - Prints para o `/replica-diff` em `replica/clone-screens/` (sem prints do original para comparar: o recon foi feito sem entrar na conta).
+
+## Backend — login e banco (17/10/2026)
+
+| parte | status | o que falta | o que deu mais trabalho |
+| --- | --- | --- | --- |
+| Migrações + RLS | feito | pgvector (quando a busca precisar) | endurecer `orgs` (só dono altera o teto de custo); revogar `anon` |
+| Camada de dados no Postgres | feito | — | toda função virou assíncrona; o driver serializa `jsonb` sozinho e eu serializava de novo (gravava texto dentro do JSON) — corrigido + migração 0002 que trava o formato |
+| Login Supabase Auth | feito (simulador) | confirmar no projeto real com `npm run check:supabase` | este ambiente não baixa o Supabase; simulador do protocolo para testar de ponta a ponta |
+| Arquivos no Storage | parcial | testar no projeto real (o check grava e apaga um arquivo) | sem servidor de Storage local |
+| Apagar conta | feito | transferir posse quando houver mais membros | apagar arquivos do bucket por pasta |
+| Login com Google | não | OAuth client do Google + botão | — |
+
+Detalhes, passo a passo para ligar o seu projeto e checklist de segurança: `replica/backend.md`.

@@ -11,9 +11,9 @@ export const metadata: Metadata = { title: 'Personas' };
 
 export default async function IcpsPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const ws = getWorkspace(slug);
-  const icps = listIcps(ws.id);
-  const creatives = listCreatives(ws.id);
+  const ws = await getWorkspace(slug);
+  const icps = await listIcps(ws.id);
+  const creatives = await listCreatives(ws.id);
   const newBtn = (
     <Link href={`/w/${slug}/personas/nova`} className={buttonStyles({ variant: 'primary' })}>
       <Plus className="size-4" aria-hidden /> Nova persona

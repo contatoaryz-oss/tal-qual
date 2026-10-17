@@ -15,11 +15,11 @@ export const metadata: Metadata = { title: 'Criar' };
 export default async function CreatePage({ params, searchParams }: { params: Promise<{ slug: string }>; searchParams: Promise<{ oferta?: string; persona?: string }> }) {
   const { slug } = await params;
   const q = await searchParams;
-  const ws = getWorkspace(slug);
-  const offers = listOffers(ws.id);
-  const icps = listIcps(ws.id);
-  const links = listOfferIcps(ws.id);
-  const ready = readiness(ws.id);
+  const ws = await getWorkspace(slug);
+  const offers = await listOffers(ws.id);
+  const icps = await listIcps(ws.id);
+  const links = await listOfferIcps(ws.id);
+  const ready = await readiness(ws.id);
 
   if (offers.length === 0) {
     return (

@@ -22,8 +22,8 @@ const LABEL: Record<StageKey, string> = {
 
 export default async function OnboardingPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const ws = getWorkspace(slug);
-  const stages = listStages(ws.id);
+  const ws = await getWorkspace(slug);
+  const stages = await listStages(ws.id);
   const running = ws.status === 'onboarding';
   const failed = stages.filter((s) => s.status === 'failed');
   const source = ws.instagramHandle ? `@${ws.instagramHandle}` : ws.websiteUrl;

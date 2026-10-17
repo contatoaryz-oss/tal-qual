@@ -8,7 +8,7 @@ export const metadata: Metadata = { title: 'Nova persona' };
 
 export default async function NewIcpPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  getWorkspace(slug);
+  await getWorkspace(slug);
   return (
     <>
       <PageHeader title="Nova persona" back={{ href: `/w/${slug}/personas`, label: 'Personas' }} />

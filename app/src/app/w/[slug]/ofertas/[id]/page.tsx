@@ -14,10 +14,10 @@ export const metadata: Metadata = { title: 'Oferta' };
 export default async function OfferPage({ params, searchParams }: { params: Promise<{ slug: string; id: string }>; searchParams: Promise<{ salvo?: string }> }) {
   const { slug, id } = await params;
   const { salvo } = await searchParams;
-  const ws = getWorkspace(slug);
+  const ws = await getWorkspace(slug);
   let offer;
-  try { offer = getOffer(ws.id, id); } catch (e) { if (e instanceof NotFoundError) notFound(); throw e; }
-  const links = listOfferIcps(ws.id).filter((l) => l.offerId === id);
+  try { offer = await getOffer(ws.id, id); } catch (e) { if (e instanceof NotFoundError) notFound(); throw e; }
+  const links = (await listOfferIcps(ws.id)).filter((l) => l.offerId === id);
 
   return (
     <>
@@ -39,7 +39,7 @@ export default async function OfferPage({ params, searchParams }: { params: Prom
           </Section>
           <Section title="Personas" description="Para quem é esta oferta. A principal é usada por padrão na hora de criar.">
             <IcpLinks
-              icps={listIcps(ws.id)}
+              icps={await listIcps(ws.id)}
               links={links}
               onToggle={toggleOfferIcpAction.bind(null, slug, id)}
               onPrimary={setPrimaryIcpAction.bind(null, slug, id)}

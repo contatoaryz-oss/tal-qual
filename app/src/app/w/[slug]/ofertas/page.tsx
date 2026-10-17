@@ -12,10 +12,10 @@ export const metadata: Metadata = { title: 'Ofertas' };
 
 export default async function OffersPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const ws = getWorkspace(slug);
-  const offers = listOffers(ws.id);
-  const links = listOfferIcps(ws.id);
-  const creatives = listCreatives(ws.id);
+  const ws = await getWorkspace(slug);
+  const offers = await listOffers(ws.id);
+  const links = await listOfferIcps(ws.id);
+  const creatives = await listCreatives(ws.id);
   const newBtn = (
     <Link href={`/w/${slug}/ofertas/nova`} className={buttonStyles({ variant: 'primary' })}>
       <Plus className="size-4" aria-hidden /> Nova oferta

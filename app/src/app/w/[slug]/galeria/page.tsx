@@ -2,7 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { Images, Sparkles } from 'lucide-react';
 import { toggleFavoriteAction } from '@/app/actions';
-import { currentVersion, getWorkspace, listCreatives, listIcps, listOffers } from '@/lib/data';
+import { currentVersions, getWorkspace, listCreatives, listIcps, listOffers } from '@/lib/data';
 import { fileUrl } from '@/lib/files';
 import { PLACEMENTS } from '@/lib/data/types';
 import { PageHeader } from '@/components/page';
@@ -24,11 +24,12 @@ const FILTERS = [
 export default async function GalleryPage({ params, searchParams }: { params: Promise<{ slug: string }>; searchParams: Promise<{ filtro?: string }> }) {
   const { slug } = await params;
   const { filtro = 'todas' } = await searchParams;
-  const ws = getWorkspace(slug);
-  const all = listCreatives(ws.id);
+  const ws = await getWorkspace(slug);
+  const all = await listCreatives(ws.id);
   const items = filtro === 'favoritas' ? all.filter((c) => c.favorite) : filtro === 'falhou' ? all.filter((c) => c.status === 'failed') : all;
-  const offers = new Map(listOffers(ws.id).map((o) => [o.id, o.title]));
-  const icps = new Map(listIcps(ws.id).map((i) => [i.id, i.name]));
+  const offers = new Map((await listOffers(ws.id)).map((o) => [o.id, o.title]));
+  const icps = new Map((await listIcps(ws.id)).map((i) => [i.id, i.name]));
+  const versions = await currentVersions(ws.id, all);
   const pending = all.some((c) => c.status === 'queued' || c.status === 'processing');
 
   return (
@@ -69,7 +70,7 @@ export default async function GalleryPage({ params, searchParams }: { params: Pr
           ) : (
             <ul className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4">
               {items.map((c) => {
-                const v = currentVersion(ws.id, c);
+                const v = versions.get(c.id);
                 const src = fileUrl(v?.mediaPaths[0]);
                 const meta = [c.offerId && offers.get(c.offerId), c.icpId && icps.get(c.icpId)].filter(Boolean).join(' · ');
                 return (

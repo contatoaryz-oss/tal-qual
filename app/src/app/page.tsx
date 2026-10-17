@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Plus, Users } from 'lucide-react';
-import { listWorkspaces } from '@/lib/data';
-import { getBrandKit } from '@/lib/data';
+import { context, getBrandKit, listWorkspaces } from '@/lib/data';
+import { AccountMenu } from '@/components/shell/account-menu';
 import { fileUrl } from '@/lib/files';
 import { buttonStyles } from '@/components/ui/button-styles';
 import { Badge, EmptyState } from '@/components/ui/display';
@@ -10,13 +10,15 @@ import { focusRing } from '@/components/ui/cn';
 
 export const dynamic = 'force-dynamic';
 
-export default function ClientsPage() {
-  const workspaces = listWorkspaces();
+export default async function ClientsPage() {
+  const { user } = await context();
+  const workspaces = await listWorkspaces();
+  const logos = new Map(await Promise.all(workspaces.map(async (w) => [w.id, fileUrl((await getBrandKit(w.id)).logoPath)] as const)));
   return (
     <div className="min-h-dvh bg-bg">
       <header className="flex h-[var(--layout-header)] items-center justify-between border-b border-border bg-surface px-4 md:px-6">
         <span className="font-display text-md font-extrabold text-text">Estúdio</span>
-        <ThemeToggle />
+        <div className="flex items-center gap-1"><ThemeToggle /><AccountMenu email={user.email} /></div>
       </header>
       <main id="conteudo" className="mx-auto w-full max-w-[var(--layout-content-max)] px-4 py-8 md:px-6">
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
@@ -39,7 +41,7 @@ export default function ClientsPage() {
         ) : (
           <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {workspaces.map((w) => {
-              const logo = fileUrl(getBrandKit(w.id).logoPath);
+              const logo = logos.get(w.id);
               return (
                 <li key={w.id}>
                   <Link

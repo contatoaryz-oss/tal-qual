@@ -14,12 +14,12 @@ export const metadata: Metadata = { title: 'Persona' };
 export default async function IcpPage({ params, searchParams }: { params: Promise<{ slug: string; id: string }>; searchParams: Promise<{ salvo?: string }> }) {
   const { slug, id } = await params;
   const { salvo } = await searchParams;
-  const ws = getWorkspace(slug);
+  const ws = await getWorkspace(slug);
   let icp;
-  try { icp = getIcp(ws.id, id); } catch (e) { if (e instanceof NotFoundError) notFound(); throw e; }
-  const offerIds = new Set(listOfferIcps(ws.id).filter((l) => l.icpId === id).map((l) => l.offerId));
-  const offers = listOffers(ws.id).filter((o) => offerIds.has(o.id));
-  const made = listCreatives(ws.id).filter((c) => c.icpId === id).length;
+  try { icp = await getIcp(ws.id, id); } catch (e) { if (e instanceof NotFoundError) notFound(); throw e; }
+  const offerIds = new Set((await listOfferIcps(ws.id)).filter((l) => l.icpId === id).map((l) => l.offerId));
+  const offers = (await listOffers(ws.id)).filter((o) => offerIds.has(o.id));
+  const made = (await listCreatives(ws.id)).filter((c) => c.icpId === id).length;
 
   return (
     <>

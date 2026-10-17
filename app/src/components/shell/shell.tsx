@@ -12,6 +12,7 @@ import {
 import { cn, focusRing } from '@/components/ui/cn';
 import { IconButton } from '@/components/ui/button';
 import { NAV_GROUPS, SCREENS } from '@/lib/nav';
+import { AccountMenu } from './account-menu';
 
 const ICONS: Record<string, ReactNode> = {
   palette: <Palette />, book: <BookOpen />, users: <Users />, layers: <Layers />, swords: <Swords />,
@@ -139,8 +140,8 @@ export function ThemeToggle() {
 }
 
 export function AppShell({
-  current, workspaces, liveScreens, children,
-}: { current: ShellWorkspace; workspaces: ShellWorkspace[]; liveScreens: string[]; children: ReactNode }) {
+  current, workspaces, liveScreens, userEmail, children,
+}: { current: ShellWorkspace; workspaces: ShellWorkspace[]; liveScreens: string[]; userEmail: string; children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const live = new Set(liveScreens);
   return (
@@ -175,6 +176,7 @@ export function AppShell({
           <WorkspaceSwitcher current={current} workspaces={workspaces} />
           <div className="ml-auto flex items-center gap-1">
             <ThemeToggle />
+            <AccountMenu email={userEmail} />
           </div>
         </header>
         <main id="conteudo" tabIndex={-1} className="mx-auto w-full max-w-[var(--layout-content-max)] px-4 py-6 outline-none md:px-6 md:py-8">

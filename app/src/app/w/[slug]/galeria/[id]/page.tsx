@@ -19,20 +19,20 @@ import { AutoRefresh } from '@/components/live/auto-refresh';
 
 export const metadata: Metadata = { title: 'Criativo' };
 
-const safe = <T,>(fn: () => T): T | null => { try { return fn(); } catch { return null; } };
+const safe = async <T,>(p: Promise<T>): Promise<T | null> => p.catch(() => null);
 const dt = (iso: string) => new Date(iso).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short', timeZone: 'America/Sao_Paulo' });
 
 export default async function CreativePage({ params }: { params: Promise<{ slug: string; id: string }> }) {
   const { slug, id } = await params;
-  const ws = getWorkspace(slug);
+  const ws = await getWorkspace(slug);
   let c;
-  try { c = getCreative(ws.id, id); } catch (e) { if (e instanceof NotFoundError) notFound(); throw e; }
-  const versions = listVersions(ws.id, id);
+  try { c = await getCreative(ws.id, id); } catch (e) { if (e instanceof NotFoundError) notFound(); throw e; }
+  const versions = await listVersions(ws.id, id);
   const current = versions.find((v) => v.version === c.currentVersion);
   const src = fileUrl(current?.mediaPaths[0]);
-  const offer = c.offerId ? safe(() => getOffer(ws.id, c.offerId!)) : null;
-  const icp = c.icpId ? safe(() => getIcp(ws.id, c.icpId!)) : null;
-  const brand = getBrandKit(ws.id);
+  const offer = c.offerId ? await safe(getOffer(ws.id, c.offerId)) : null;
+  const icp = c.icpId ? await safe(getIcp(ws.id, c.icpId)) : null;
+  const brand = await getBrandKit(ws.id);
   const logo = fileUrl(brand.logoPath);
   const pending = c.status === 'queued' || c.status === 'processing';
   const initials = (brand.companyName ?? ws.name).split(/\s+/).slice(0, 2).map((w) => w[0]).join('').toUpperCase();

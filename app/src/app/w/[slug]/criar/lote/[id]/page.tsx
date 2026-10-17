@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { RotateCcw } from 'lucide-react';
 import { retryCreativeAction } from '@/app/actions';
-import { currentVersion, getWorkspace, listCreatives } from '@/lib/data';
+import { currentVersions, getWorkspace, listCreatives } from '@/lib/data';
 import { fileUrl } from '@/lib/files';
 import { PageHeader } from '@/components/page';
 import { Badge, InlineAlert } from '@/components/ui/display';
@@ -17,9 +17,10 @@ export const metadata: Metadata = { title: 'Gerando' };
 
 export default async function BatchPage({ params }: { params: Promise<{ slug: string; id: string }> }) {
   const { slug, id } = await params;
-  const ws = getWorkspace(slug);
-  const items = listCreatives(ws.id, { batchId: id }).reverse();
+  const ws = await getWorkspace(slug);
+  const items = (await listCreatives(ws.id, { batchId: id })).reverse();
   if (items.length === 0) notFound();
+  const versions = await currentVersions(ws.id, items);
   const pending = items.filter((c) => c.status === 'queued' || c.status === 'processing').length;
   const failed = items.filter((c) => c.status === 'failed').length;
   const done = items.length - pending - failed;
@@ -44,7 +45,7 @@ export default async function BatchPage({ params }: { params: Promise<{ slug: st
       )}
       <ul className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4" aria-busy={pending > 0}>
         {items.map((c, i) => {
-          const v = currentVersion(ws.id, c);
+          const v = versions.get(c.id);
           const src = fileUrl(v?.mediaPaths[0]);
           return (
             <li key={c.id} className="flex flex-col gap-2">
