@@ -68,3 +68,9 @@ Apagar conta e dados,auth,must,yes,yes,"agência, clientes, criativos, arquivos 
 Login com Google,auth,could,yes,no,código pronto para PKCE; falta o OAuth client do Google e o botão
 Banco com isolamento por agência (RLS),backend,must,yes,yes,33 tabelas com RLS; teste SQL e de tela com intruso
 Limite de tentativas no login e e-mails,backend,must,yes,yes,"no banco, por e-mail e IP"
+Rascunho grátis antes de gastar com IA (aprovar e só então gerar a imagem),create,should,no,no,"C1; pedido ""testar antes de pagar"" (5 reviews Trustpilot) | base: modo de teste atual"
+Leitura da marca com fonte e confiança por campo; chute pede confirmação,brand,should,no,no,C2; brand DNA impreciso (4 reviews)
+"Arte só com o que é do cliente (oferta confirmada, logo oficial, foto dele)",create,should,no,partial,"C3; ""products that are not even my product"" | M0: oferta obrigatória e logo como arquivo"
+"Checagem de qualidade antes de mostrar (logo, contraste, título inteiro, produto da oferta)",quality,should,no,partial,C4 | M0: contraste e corte sem partir palavra
+Tempo-limite por etapa com motivo e tentar de novo,onboarding,should,no,partial,"C5; ""loading for 4 hours"" | M0: estados, retomada de job órfão"
+Custo por cliente no mês; falha não conta; aviso antes do teto,create,should,no,partial,"C6; cobrança de crédito sem entrega (5 reviews) | M0: custo antes, teto, falha não conta"
