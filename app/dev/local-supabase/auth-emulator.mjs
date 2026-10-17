@@ -44,6 +44,7 @@ function verifyJwt(token) {
 const sessions = new Map(); // refresh_token -> { userId, sessionId }
 const tokens = new Map();   // token do e-mail -> { userId, type, challenge, redirectTo }
 const codes = new Map();    // auth_code -> { userId, challenge }
+const reused = new Map();   // refresh token já usado -> { at, result } (janela de reuso)
 
 const hash = (pw) => { const salt = randomBytes(16); return `${salt.toString('hex')}:${scryptSync(pw, salt, 32).toString('hex')}`; };
 const check = (pw, stored) => {
@@ -60,9 +61,9 @@ const userJson = (u) => ({
   identities: [], created_at: u.created_at, updated_at: u.updated_at, is_anonymous: false,
 });
 
-async function session(u) {
+async function session(u, keepSessionId) {
   await sql`update auth.users set last_sign_in_at = now() where id = ${u.id}`;
-  const sessionId = randomUUID();
+  const sessionId = keepSessionId ?? randomUUID();
   const refresh = randomBytes(24).toString('base64url');
   sessions.set(refresh, { userId: u.id, sessionId });
   const now = Math.floor(Date.now() / 1000);
@@ -131,12 +132,18 @@ createServer(async (req, res) => {
         return send(res, 200, await session(u));
       }
       if (grant === 'refresh_token') {
+        // Igual ao Supabase: um refresh token já usado ainda vale por 10 s (REFRESH_TOKEN_REUSE_INTERVAL)
+        // e devolve a mesma sessão nova, desde que ela continue ativa. Duas renovações simultâneas não deslogam.
+        const used = reused.get(b.refresh_token);
+        if (used && Date.now() - used.at < 10_000 && sessions.has(used.result.refresh_token)) return send(res, 200, used.result);
         const s = sessions.get(b.refresh_token);
         if (!s) return err(res, 400, 'refresh_token_not_found', 'Invalid Refresh Token: Refresh Token Not Found');
         sessions.delete(b.refresh_token);
         const u = await getUser(s.userId);
         if (!u) return err(res, 400, 'user_not_found', 'User not found');
-        return send(res, 200, await session(u));
+        const result = await session(u, s.sessionId);
+        reused.set(b.refresh_token, { at: Date.now(), result });
+        return send(res, 200, result);
       }
       if (grant === 'pkce') {
         const c = codes.get(b.auth_code);

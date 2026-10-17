@@ -152,11 +152,15 @@ test('F01-E10 390 px, tema escuro, acessível', async ({ browser, axe }) => {
   await ctx.close();
 });
 
-test('F01-N1 sem conexão ao enviar → mensagem, sem tela de erro', async ({ page, context }) => {
+test('F01-N1 sem conexão ao enviar → mensagem em português, dá para tentar de novo', async ({ page, context, guards }) => {
   await page.goto('/novo');
   await page.getByLabel('Site ou @ do Instagram').fill('@sem.rede');
   await context.setOffline(true);
   await page.getByRole('button', { name: 'Ler o negócio' }).click();
-  await expect(page.getByText(/sem conexão|conexão/i)).toBeVisible({ timeout: 10_000 });
+  await expect(page.getByRole('heading', { name: 'Sem conexão' })).toBeVisible({ timeout: 10_000 });
   await context.setOffline(false);
+  await page.getByRole('button', { name: 'Tentar de novo' }).click();
+  await expect(page.getByLabel('Site ou @ do Instagram')).toBeVisible();
+  // erros de rede do navegador são o esperado aqui
+  guards.consoleErrors.splice(0, guards.consoleErrors.length, ...guards.consoleErrors.filter((e) => !/INTERNET_DISCONNECTED|Failed to fetch/.test(e)));
 });

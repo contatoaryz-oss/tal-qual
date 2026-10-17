@@ -100,6 +100,13 @@ test('F02-E3 13 dores: nenhuma some sem aviso', async ({ page }) => {
   const id = await createIcp(page, 'Persona com muitas dores', pains);
   const [{ n }] = await db`select cardinality(pain_points)::int as n from icps where id = ${id}`;
   expect(n, 'a 13ª dor foi descartada em silêncio').toBe(13);
+  // acima do limite: erro no campo, nada some
+  await page.goto(`${W}/personas/nova`);
+  await page.getByLabel('Nome da persona').fill('Persona com dores demais');
+  await page.getByLabel('Dores').fill(Array.from({ length: 31 }, (_, i) => `Dor ${i + 1}`).join('\n'));
+  await page.getByRole('button', { name: 'Criar persona' }).click();
+  await expect(page.getByText('Use até 30 itens (tem 31).')).toBeVisible();
+  await expect(page.getByLabel('Dores')).toHaveValue(/Dor 31$/);
 });
 
 test('F02-E4 emoji e acento no nome da oferta', async ({ page }) => {

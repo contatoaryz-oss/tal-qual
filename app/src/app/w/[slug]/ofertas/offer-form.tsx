@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState, useTransition } from 'react';
+import { useActionState, useOptimistic, useTransition } from 'react';
 import type { FormState } from '@/app/actions';
 import type { Icp, Offer, OfferIcp } from '@/lib/data/types';
 import { Button } from '@/components/ui/button';
@@ -68,11 +68,19 @@ export function IcpLinks({
   onPrimary: (icpId: string) => Promise<void>;
 }) {
   const [pending, start] = useTransition();
+  // Marca/desmarca na hora; o servidor confirma em seguida (antes a caixa ficava parada até a resposta).
+  const [shown, setShown] = useOptimistic(links, (cur: OfferIcp[], a: { icpId: string; link?: boolean; primary?: boolean }) => {
+    if (a.primary) return cur.map((l) => ({ ...l, isPrimary: l.icpId === a.icpId }));
+    if (a.link) return cur.some((l) => l.icpId === a.icpId) ? cur : [...cur, { icpId: a.icpId, isPrimary: cur.length === 0 } as OfferIcp];
+    const rest = cur.filter((l) => l.icpId !== a.icpId);
+    const lostPrimary = cur.find((l) => l.icpId === a.icpId)?.isPrimary;
+    return lostPrimary && rest.length ? rest.map((l, i) => ({ ...l, isPrimary: i === 0 })) : rest;
+  });
   if (icps.length === 0) return <p className="text-sm text-text-muted">Crie uma persona primeiro para vincular.</p>;
   return (
     <ul className="flex flex-col gap-2" aria-busy={pending}>
       {icps.map((i) => {
-        const link = links.find((l) => l.icpId === i.id);
+        const link = shown.find((l) => l.icpId === i.id);
         return (
           <li key={i.id} className="flex flex-wrap items-center gap-3 rounded-md border border-border px-3 py-2">
             <label className="flex flex-1 cursor-pointer items-center gap-2 text-sm text-text">
@@ -80,7 +88,7 @@ export function IcpLinks({
                 type="checkbox"
                 checked={Boolean(link)}
                 disabled={pending}
-                onChange={(e) => start(() => onToggle(i.id, e.target.checked))}
+                onChange={(e) => { const on = e.target.checked; start(async () => { setShown({ icpId: i.id, link: on }); await onToggle(i.id, on); }); }}
                 className={cn('size-4 accent-[var(--color-primary)]', focusRing)}
               />
               <span className="break-words">{i.name}</span>
@@ -88,7 +96,7 @@ export function IcpLinks({
             {link?.isPrimary ? (
               <Badge tone="accent" size="sm">principal</Badge>
             ) : link ? (
-              <Button variant="ghost" size="sm" disabled={pending} onClick={() => start(() => onPrimary(i.id))}>Tornar principal</Button>
+              <Button variant="ghost" size="sm" disabled={pending} onClick={() => start(async () => { setShown({ icpId: i.id, primary: true }); await onPrimary(i.id); })}>Tornar principal</Button>
             ) : null}
           </li>
         );

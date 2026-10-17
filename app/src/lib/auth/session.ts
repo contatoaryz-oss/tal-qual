@@ -1,5 +1,6 @@
 import 'server-only';
 import { cache } from 'react';
+import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { supabaseServer } from './supabase';
 
@@ -15,6 +16,12 @@ export const getUser = cache(async (): Promise<SessionUser | null> => {
 
 export async function requireUser(): Promise<SessionUser> {
   const u = await getUser();
-  if (!u) redirect('/entrar');
+  if (!u) {
+    // Volta para onde estava depois de entrar (o referer é da própria origem; safeNext filtra no login).
+    const ref = (await headers()).get('referer');
+    let next = '';
+    try { if (ref) { const r = new URL(ref); next = r.pathname + r.search; } } catch {}
+    redirect(next && next !== '/' ? `/entrar?next=${encodeURIComponent(next)}` : '/entrar');
+  }
   return u;
 }

@@ -34,6 +34,8 @@ export const test = base.extend<{ guards: Guards; allow404: boolean; axe: (page?
   }, { auto: true }],
   axe: async ({ page }, use) => {
     await use(async (p = page) => {
+      // do topo: com a página rolada, o cabeçalho fixo cobre botões e o axe acusa "target-size" falso
+      await p.evaluate(() => window.scrollTo(0, 0));
       const r = await new AxeBuilder({ page: p as never }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
       expect(r.violations.map((v) => `${v.id}: ${v.nodes[0]?.target.join(' ')}`), `axe em ${p.url()}`).toEqual([]);
     });

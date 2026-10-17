@@ -23,10 +23,10 @@ export function IcpForm({ icp, action, submitLabel }: { icp?: Icp; action: (s: F
       </div>
       <Textarea name="description" label="Descrição" placeholder="O que move essa pessoa e onde o negócio entra na vida dela" maxLength={600} defaultValue={v('description', icp?.description ?? '')} error={err('description')} />
       <div className="grid gap-5 md:grid-cols-2">
-        <Textarea name="painPoints" label="Dores" hint="Uma por linha. Viram gancho e ângulo nas artes." rows={4} defaultValue={v('painPoints', join(icp?.painPoints))} />
-        <Textarea name="goals" label="O que ela quer" hint="Uma por linha. Viram headline." rows={4} defaultValue={v('goals', join(icp?.goals))} />
-        <Textarea name="objections" label="Objeções" hint="Uma por linha. O que faz ela hesitar." rows={3} defaultValue={v('objections', join(icp?.objections))} />
-        <Textarea name="channels" label="Onde ela está" hint="Uma por linha. Ex.: Instagram, Google." rows={3} defaultValue={v('channels', join(icp?.channels))} />
+        <Textarea name="painPoints" label="Dores" hint="Uma por linha. Viram gancho e ângulo nas artes." rows={4} defaultValue={v('painPoints', join(icp?.painPoints))} error={err('painPoints')} />
+        <Textarea name="goals" label="O que ela quer" hint="Uma por linha. Viram headline." rows={4} defaultValue={v('goals', join(icp?.goals))} error={err('goals')} />
+        <Textarea name="objections" label="Objeções" hint="Uma por linha. O que faz ela hesitar." rows={3} defaultValue={v('objections', join(icp?.objections))} error={err('objections')} />
+        <Textarea name="channels" label="Onde ela está" hint="Uma por linha. Ex.: Instagram, Google." rows={3} defaultValue={v('channels', join(icp?.channels))} error={err('channels')} />
       </div>
       <div className="flex flex-wrap items-center gap-3">
         <Button type="submit" loading={pending}>{submitLabel}</Button>

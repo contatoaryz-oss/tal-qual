@@ -107,6 +107,8 @@ export function ColorEditor({ initial, onSave }: { initial: BrandColor[]; onSave
 
 /* ------------------------------ logo ------------------------------ */
 
+const MAX_LOGO_BYTES = 10 * 1024 * 1024;
+
 export function LogoUpload({
   logoUrl, action, onRemove,
 }: { logoUrl: string | null; action: (s: FormState, fd: FormData) => Promise<FormState>; onRemove: () => Promise<void> }) {
@@ -115,6 +117,19 @@ export function LogoUpload({
   const [removing, start] = useTransition();
   const form = useRef<HTMLFormElement>(null);
   const fileInput = useRef<HTMLInputElement>(null);
+  const [localError, setLocalError] = useState<string | null>(null);
+  // Confere o tamanho antes de enviar: acima do limite o servidor nem recebe o arquivo inteiro.
+  const submitIfOk = () => {
+    const f = fileInput.current?.files?.[0];
+    if (f && f.size > MAX_LOGO_BYTES) {
+      setLocalError(`O arquivo passa de 10 MB (${(f.size / 1024 / 1024).toLocaleString('pt-BR', { maximumFractionDigits: 1 })} MB). Exporte uma versão menor.`);
+      if (fileInput.current) fileInput.current.value = '';
+      return;
+    }
+    setLocalError(null);
+    form.current?.requestSubmit();
+  };
+  const message = localError ?? state?.fieldErrors?.logo;
 
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
@@ -138,7 +153,7 @@ export function LogoUpload({
               const dt = new DataTransfer();
               dt.items.add(f);
               fileInput.current.files = dt.files;
-              form.current?.requestSubmit();
+              submitIfOk();
             }
           }}
           className={cn(
@@ -157,11 +172,11 @@ export function LogoUpload({
             accept="image/png,image/jpeg,image/webp,image/svg+xml"
             className="sr-only"
             aria-describedby="logo-msg"
-            onChange={() => form.current?.requestSubmit()}
+            onChange={submitIfOk}
           />
         </label>
-        <p id="logo-msg" aria-live="polite" className={cn('text-sm', state?.fieldErrors?.logo ? 'text-danger' : 'text-success')}>
-          {state?.fieldErrors?.logo ?? (state?.ok ? 'Logo atualizado.' : '')}
+        <p id="logo-msg" aria-live="polite" className={cn('text-sm', message ? 'text-danger' : 'text-success')}>
+          {message ?? (state?.ok ? 'Logo atualizado.' : '')}
         </p>
         {logoUrl && (
           <div>

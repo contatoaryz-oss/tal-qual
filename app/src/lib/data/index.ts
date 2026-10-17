@@ -31,7 +31,13 @@ export const context = cache(async () => {
 
 async function asUser<T>(fn: (tx: Tx, c: Awaited<ReturnType<typeof context>>) => Promise<T>): Promise<T> {
   const c = await context();
-  return withUserTx(c.user.id, (tx) => fn(tx, c));
+  try {
+    return await withUserTx(c.user.id, (tx) => fn(tx, c));
+  } catch (e) {
+    // id malformado no endereço (/personas/abc): o Postgres recusa o uuid → para o usuário é "não existe".
+    if ((e as { code?: string }).code === '22P02') notFound();
+    throw e;
+  }
 }
 
 /* workspaces */

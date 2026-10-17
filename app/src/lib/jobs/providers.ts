@@ -1,4 +1,5 @@
 import 'server-only';
+import { clip } from '../text';
 import type { BrandKit, Creative, Icp, Offer, Workspace } from '../data/types';
 
 // Pontos de troca. Hoje: implementações de teste, determinísticas e grátis.
@@ -78,8 +79,8 @@ export const testCopyWriter: CopyWriter = {
       brand.headline ?? undefined,
       brief ? firstSentence(brief) : undefined,
     ].filter((x): x is string => Boolean(x && x.trim()));
-    const headline = (options[variant % Math.max(1, options.length)] ?? brand.companyName ?? 'Seu anúncio').slice(0, 70);
-    const subhead = (offer?.description ?? (brief ? firstSentence(brief) : '') ?? '').slice(0, 110);
+    const headline = clip(options[variant % Math.max(1, options.length)] ?? brand.companyName ?? 'Seu anúncio', 70);
+    const subhead = clip(offer?.description ?? (brief ? firstSentence(brief) : '') ?? '', 110);
     const cta = offer ? ctaByKind[offer.kind] : 'Saiba mais';
     const caption = [
       pain ? `${cap(pain)}? A gente resolve.` : null,

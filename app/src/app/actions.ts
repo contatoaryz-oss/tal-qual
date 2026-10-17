@@ -12,7 +12,14 @@ import { parsePrice, parseSource } from '@/lib/parse';
 export type FormState = { ok?: boolean; error?: string; fieldErrors?: Record<string, string>; values?: Record<string, string> } | null;
 
 const values = (fd: FormData) => Object.fromEntries([...fd.entries()].filter(([, v]) => typeof v === 'string')) as Record<string, string>;
-const lines = (s: string | undefined) => (s ?? '').split('\n').map((x) => x.trim()).filter(Boolean).slice(0, 12);
+const lines = (s: string | undefined) => (s ?? '').split('\n').map((x) => x.trim()).filter(Boolean);
+const MAX_LINES = 30;
+/** Listas "uma por linha": acima do limite vira erro no campo (antes o excesso sumia sem aviso). */
+function tooManyLines(v: Record<string, string>, keys: string[]) {
+  const errs: Record<string, string> = {};
+  for (const k of keys) { const n = lines(v[k]).length; if (n > MAX_LINES) errs[k] = `Use até ${MAX_LINES} itens (tem ${n}).`; }
+  return errs;
+}
 const fieldErrors = (e: z.ZodError) => Object.fromEntries(e.issues.map((i) => [String(i.path[0]), i.message]));
 
 /* ------------------------------ S01: novo cliente ------------------------------ */
@@ -118,7 +125,10 @@ const icpSchema = z.object({
 function icpFromForm(fd: FormData) {
   const v = values(fd);
   const p = icpSchema.safeParse(v);
-  if (!p.success) return { error: { values: v, fieldErrors: fieldErrors(p.error) } as FormState };
+  const listErrs = tooManyLines(v, ['painPoints', 'goals', 'objections', 'channels']);
+  if (!p.success || Object.keys(listErrs).length) {
+    return { error: { values: v, fieldErrors: { ...(p.success ? {} : fieldErrors(p.error)), ...listErrs } } as FormState };
+  }
   return {
     input: {
       name: p.data.name, title: p.data.title || null, description: p.data.description || null,

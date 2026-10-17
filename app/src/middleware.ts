@@ -24,6 +24,10 @@ export async function middleware(req: NextRequest) {
 
   if (!user && !isPublic) {
     if (path.startsWith('/api/')) return new NextResponse('Não encontrado', { status: 404 });
+    // Server action com a sessão já encerrada (saiu em outra aba, expirou): um redirect aqui devolve HTML
+    // para o cliente do Next, que quebra a tela inteira. Deixa passar: a própria action chama requireUser(),
+    // que responde com um redirect que o Next entende, e o RLS barra qualquer leitura/escrita sem usuário.
+    if (req.method === 'POST' && req.headers.has('next-action')) return res;
     const url = req.nextUrl.clone();
     url.pathname = '/entrar';
     url.search = path === '/' ? '' : `?next=${encodeURIComponent(path + req.nextUrl.search)}`;
